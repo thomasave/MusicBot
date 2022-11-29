@@ -25,7 +25,7 @@ import com.jagrosh.jmusicbot.commands.MusicCommand;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkipCmd extends MusicCommand 
+public class SkipCmd extends MusicCommand
 {
     public SkipCmd(Bot bot)
     {
@@ -38,10 +38,14 @@ public class SkipCmd extends MusicCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         RequestMetadata rm = handler.getRequestMetadata();
+        if (handler.getPlayer().getPlayingTrack().getInfo().title.contains("Efteling") && rm.user.username.contains("dimisaurus")) {
+            event.reply("Sorry, Efteling music cannot be skipped. Please try again when a different song is playing.");
+            return;
+        }
         if(event.getAuthor().getIdLong() == rm.getOwner())
         {
             event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
@@ -72,5 +76,5 @@ public class SkipCmd extends MusicCommand
             event.reply(msg);
         }
     }
-    
+
 }
