@@ -18,13 +18,14 @@ package com.jagrosh.jmusicbot.commands.dj;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
+import com.jagrosh.jmusicbot.audio.RequestMetadata;
 import com.jagrosh.jmusicbot.commands.DJCommand;
 
 /**
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public class SkiptoCmd extends DJCommand 
+public class SkiptoCmd extends DJCommand
 {
     public SkiptoCmd(Bot bot)
     {
@@ -37,7 +38,7 @@ public class SkiptoCmd extends DJCommand
     }
 
     @Override
-    public void doCommand(CommandEvent event) 
+    public void doCommand(CommandEvent event)
     {
         int index = 0;
         try
@@ -50,6 +51,11 @@ public class SkiptoCmd extends DJCommand
             return;
         }
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        RequestMetadata rm = handler.getRequestMetadata();
+        if (handler.getPlayer().getPlayingTrack().getInfo().title.contains("Efteling") && rm.user.username.contains("dimisaurus")) {
+            event.reply("Sorry, Efteling music cannot be skipped. Please try again when a different song is playing.");
+            return;
+        }
         if(index<1 || index>handler.getQueue().size())
         {
             event.reply(event.getClient().getError()+" Position must be a valid integer between 1 and "+handler.getQueue().size()+"!");
