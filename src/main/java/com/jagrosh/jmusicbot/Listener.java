@@ -53,8 +53,7 @@ public class Listener extends ListenerAdapter
             log.warn("This bot is not on any guilds! Use the following link to add the bot to your guilds!");
             log.warn(event.getJDA().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
         }
-        credit(event.getJDA());
-        event.getJDA().getGuilds().forEach((guild) -> 
+        event.getJDA().getGuilds().forEach((guild) ->
         {
             try
             {
@@ -106,21 +105,5 @@ public class Listener extends ListenerAdapter
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent event) 
-    {
-        credit(event.getJDA());
-    }
-    
-    // make sure people aren't adding clones to dbots
-    private void credit(JDA jda)
-    {
-        Guild dbots = jda.getGuildById(110373943822540800L);
-        if(dbots==null)
-            return;
-        if(bot.getConfig().getDBots())
-            return;
-        jda.getTextChannelById(119222314964353025L)
-                .sendMessage("This account is running JMusicBot. Please do not list bot clones on this server, <@"+bot.getConfig().getOwnerId()+">.").complete();
-        dbots.leave().queue();
-    }
+    public void onGuildJoin(GuildJoinEvent event) {}
 }

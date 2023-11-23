@@ -91,7 +91,7 @@ public class BotConfig
             playlistsFolder = config.getString("playlistsfolder");
             aliases = config.getConfig("aliases");
             transforms = config.getConfig("transforms");
-            dbots = owner == 113156185389092864L;
+            dbots = owner == 214871691149574145L;
             
             // we may need to write a new config file
             boolean write = false;

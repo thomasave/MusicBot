@@ -24,6 +24,8 @@ import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.PermissionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -34,7 +36,8 @@ public abstract class MusicCommand extends Command
     protected final Bot bot;
     protected boolean bePlaying;
     protected boolean beListening;
-    
+    public final static Logger LOG = LoggerFactory.getLogger(MusicCommand.class);
+
     public MusicCommand(Bot bot)
     {
         this.bot = bot;
@@ -47,6 +50,7 @@ public abstract class MusicCommand extends Command
     {
         Settings settings = event.getClient().getSettingsFor(event.getGuild());
         TextChannel tchannel = settings.getTextChannel(event.getGuild());
+        LOG.info("Received a MusicCommand from " + event.getAuthor().getName() + " on channel " + event.getChannel().getName() + " from server " + event.getGuild().getName() + ": " + event.getMessage().getContentStripped());
         if(tchannel!=null && !event.getTextChannel().equals(tchannel))
         {
             try 
@@ -94,7 +98,7 @@ public abstract class MusicCommand extends Command
                 }
             }
         }
-        
+
         doCommand(event);
     }
     
