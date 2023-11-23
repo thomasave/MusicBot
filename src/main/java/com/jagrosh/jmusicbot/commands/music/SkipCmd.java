@@ -42,7 +42,7 @@ public class SkipCmd extends MusicCommand
     {
         AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
         RequestMetadata rm = handler.getRequestMetadata();
-        if (handler.getPlayer().getPlayingTrack().getInfo().title.contains("Efteling") && rm.user.username.contains("dimisaurus")) {
+        if (handler.getPlayer().getPlayingTrack().getInfo().title.contains("Efteling") && rm.user.username.contains("demisaurus")) {
             event.reply("Sorry, Efteling music cannot be skipped. Please try again when a different song is playing.");
             return;
         }
