@@ -89,7 +89,7 @@ public abstract class MusicCommand extends Command
             {
                 try 
                 {
-                    event.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
+                    userState.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
                 }
                 catch(PermissionException ex) 
                 {
