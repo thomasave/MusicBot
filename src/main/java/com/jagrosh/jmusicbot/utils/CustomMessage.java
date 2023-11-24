@@ -1,5 +1,6 @@
 package com.jagrosh.jmusicbot.utils;
 
+import com.jagrosh.jmusicbot.commands.owner.ServerCmd;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -11,7 +12,8 @@ import net.dv8tion.jda.api.requests.restaction.pagination.ReactionPaginationActi
 import org.apache.commons.collections4.Bag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -22,11 +24,31 @@ public class CustomMessage implements Message {
     private TextChannel channel;
     private Member member;
 
+    public final static Logger LOG = LoggerFactory.getLogger(CustomMessage.class);
+
     public CustomMessage(Message message, Guild guild, TextChannel messageChannel) {
         myGuild = guild;
         original = message;
         channel = messageChannel;
-        member = guild.getMemberById(message.getAuthor().getId());
+        Member author = guild.getMemberById(message.getAuthor().getId());
+        if (author != null) {
+             GuildVoiceState state = author.getVoiceState();
+             if (state != null && state.inVoiceChannel()) {
+                 member = author;
+             }
+        }
+        if (member == null) {
+            for (VoiceChannel c: guild.getVoiceChannels()) {
+                for (Member m: c.getMembers()) {
+                    member = m;
+                    LOG.info("Selected member: {}", m.getEffectiveName());
+                    break;
+                }
+            }
+        }
+        if (member == null) {
+            LOG.error("Could not find a suitable member in a voice channel on server {}", guild.getName());
+        }
     }
 
     @Nullable
@@ -88,12 +110,12 @@ public class CustomMessage implements Message {
     @NotNull
     @Override
     public List<IMentionable> getMentions(@NotNull MentionType... mentionTypes) {
-        return null;
+        return original.getMentions(mentionTypes);
     }
 
     @Override
     public boolean isMentioned(@NotNull IMentionable iMentionable, @NotNull MentionType... mentionTypes) {
-        return false;
+        return original.isMentioned(iMentionable, mentionTypes);
     }
 
     @Override
@@ -237,60 +259,60 @@ public class CustomMessage implements Message {
     @NotNull
     @Override
     public List<MessageReaction> getReactions() {
-        return null;
+        return original.getReactions();
     }
 
     @NotNull
     @Override
     public List<MessageSticker> getStickers() {
-        return null;
+        return original.getStickers();
     }
 
     @Override
     public boolean isTTS() {
-        return false;
+        return original.isTTS();
     }
 
     @Nullable
     @Override
     public MessageActivity getActivity() {
-        return null;
+        return original.getActivity();
     }
 
     @NotNull
     @Override
     public MessageAction editMessage(@NotNull CharSequence charSequence) {
-        return null;
+        return original.editMessage(charSequence);
     }
 
     @NotNull
     @Override
     public MessageAction editMessageEmbeds(@NotNull Collection<? extends MessageEmbed> collection) {
-        return null;
+        return original.editMessageEmbeds(collection);
     }
 
     @NotNull
     @Override
     public MessageAction editMessageComponents(@NotNull Collection<? extends ComponentLayout> collection) {
-        return null;
+        return original.editMessageComponents(collection);
     }
 
     @NotNull
     @Override
     public MessageAction editMessageFormat(@NotNull String s, @NotNull Object... objects) {
-        return null;
+        return original.editMessageFormat(s, objects);
     }
 
     @NotNull
     @Override
     public MessageAction editMessage(@NotNull Message message) {
-        return null;
+        return original.editMessage(message);
     }
 
     @NotNull
     @Override
     public AuditableRestAction<Void> delete() {
-        return null;
+        return original.delete();
     }
 
     @NotNull
@@ -301,109 +323,109 @@ public class CustomMessage implements Message {
 
     @Override
     public boolean isPinned() {
-        return false;
+        return original.isPinned();
     }
 
     @NotNull
     @Override
     public RestAction<Void> pin() {
-        return null;
+        return original.pin();
     }
 
     @NotNull
     @Override
     public RestAction<Void> unpin() {
-        return null;
+        return original.unpin();
     }
 
     @NotNull
     @Override
     public RestAction<Void> addReaction(@NotNull Emote emote) {
-        return null;
+        return original.addReaction(emote);
     }
 
     @NotNull
     @Override
     public RestAction<Void> addReaction(@NotNull String s) {
-        return null;
+        return original.addReaction(s);
     }
 
     @NotNull
     @Override
     public RestAction<Void> clearReactions() {
-        return null;
+        return original.clearReactions();
     }
 
     @NotNull
     @Override
     public RestAction<Void> clearReactions(@NotNull String s) {
-        return null;
+        return original.clearReactions(s);
     }
 
     @NotNull
     @Override
     public RestAction<Void> clearReactions(@NotNull Emote emote) {
-        return null;
+        return original.clearReactions(emote);
     }
 
     @NotNull
     @Override
     public RestAction<Void> removeReaction(@NotNull Emote emote) {
-        return null;
+        return original.removeReaction(emote);
     }
 
     @NotNull
     @Override
     public RestAction<Void> removeReaction(@NotNull Emote emote, @NotNull User user) {
-        return null;
+        return original.removeReaction(emote, user);
     }
 
     @NotNull
     @Override
     public RestAction<Void> removeReaction(@NotNull String s) {
-        return null;
+        return original.removeReaction(s);
     }
 
     @NotNull
     @Override
     public RestAction<Void> removeReaction(@NotNull String s, @NotNull User user) {
-        return null;
+        return original.removeReaction(s, user);
     }
 
     @NotNull
     @Override
     public ReactionPaginationAction retrieveReactionUsers(@NotNull Emote emote) {
-        return null;
+        return original.retrieveReactionUsers(emote);
     }
 
     @NotNull
     @Override
     public ReactionPaginationAction retrieveReactionUsers(@NotNull String s) {
-        return null;
+        return original.retrieveReactionUsers(s);
     }
 
     @Nullable
     @Override
     public MessageReaction.ReactionEmote getReactionByUnicode(@NotNull String s) {
-        return null;
+        return original.getReactionByUnicode(s);
     }
 
     @Nullable
     @Override
     public MessageReaction.ReactionEmote getReactionById(@NotNull String s) {
-        return null;
+        return original.getReactionById(s);
     }
 
     @Nullable
     @Override
     public MessageReaction.ReactionEmote getReactionById(long l) {
-        return null;
+        return original.getReactionById(l);
     }
 
     @NotNull
     @Override
     public AuditableRestAction<Void> suppressEmbeds(boolean b) {
-        return null;
+        return original.suppressEmbeds(b);
     }
 
     @NotNull
