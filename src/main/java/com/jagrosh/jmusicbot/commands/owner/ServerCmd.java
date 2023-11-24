@@ -29,18 +29,17 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 import java.util.*;
 
-public class AdminCmd extends OwnerCommand {
+public class ServerCmd extends OwnerCommand {
     private final Bot bot;
-    public final static Logger LOG = LoggerFactory.getLogger(AdminCmd.class);
+    public final static Logger LOG = LoggerFactory.getLogger(ServerCmd.class);
 
-    public AdminCmd(Bot bot) {
+    public ServerCmd(Bot bot) {
         this.bot = bot;
         this.guildOnly = false;
-        this.name = "admin";
+        this.name = "server";
         this.arguments = "[guild] [command]";
         this.help = "override any other command with full permissions in a specific guild";
         this.aliases = bot.getConfig().getAliases(this.name);
@@ -48,7 +47,6 @@ public class AdminCmd extends OwnerCommand {
 
     @Override
     public void execute(CommandEvent event) {
-        LOG.info("Executing AdminCmd: " + event.getArgs());
         String[] parts = event.getArgs().split("\\s+", 3);
         if (parts.length < 2)  {
             return;
@@ -90,12 +88,14 @@ public class AdminCmd extends OwnerCommand {
         if (parts.length >= 3) {
             extra = parts[2];
         }
+        LOG.info("Sending command {} with extra {} to guild {}", command_name, extra, guild.getName());
         for (Command command: commands) {
             if (command.getName().equals(command_name) || Arrays.asList(command.getAliases()).contains(command_name)) {
                 CustomMessage customMessage = new CustomMessage(event.getMessage(), guild, channel);
                 MessageReceivedEvent newMessageReceivedEvent = new MessageReceivedEvent(event.getJDA(), event.getResponseNumber(), customMessage);
                 CommandEvent newCommandEvent = new CommandEvent(newMessageReceivedEvent, extra, event.getClient());
                 command.run(newCommandEvent);
+                break;
             }
         }
     }

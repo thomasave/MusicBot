@@ -30,7 +30,7 @@ public abstract class AdminCommand extends Command
         {
             if(event.getAuthor().getId().equals(event.getClient().getOwnerId()))
                 return true;
-            if(event.getGuild()==null)
+            if(event.getMessage().getMember().getGuild()==null)
                 return true;
             return event.getMember().hasPermission(Permission.MANAGE_SERVER);
         });

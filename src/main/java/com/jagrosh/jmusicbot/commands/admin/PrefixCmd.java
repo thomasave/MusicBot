@@ -43,7 +43,7 @@ public class PrefixCmd extends AdminCommand
             return;
         }
         
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
+        Settings s = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         if(event.getArgs().equalsIgnoreCase("none"))
         {
             s.setPrefix(null);
@@ -52,7 +52,7 @@ public class PrefixCmd extends AdminCommand
         else
         {
             s.setPrefix(event.getArgs());
-            event.replySuccess("Custom prefix set to `" + event.getArgs() + "` on *" + event.getGuild().getName() + "*");
+            event.replySuccess("Custom prefix set to `" + event.getArgs() + "` on *" + event.getMessage().getMember().getGuild().getName() + "*");
         }
     }
 }

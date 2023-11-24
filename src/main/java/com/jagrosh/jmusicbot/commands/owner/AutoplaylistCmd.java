@@ -48,9 +48,9 @@ public class AutoplaylistCmd extends OwnerCommand
         }
         if(event.getArgs().equalsIgnoreCase("none"))
         {
-            Settings settings = event.getClient().getSettingsFor(event.getGuild());
+            Settings settings = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
             settings.setDefaultPlaylist(null);
-            event.reply(event.getClient().getSuccess()+" Cleared the default playlist for **"+event.getGuild().getName()+"**");
+            event.reply(event.getClient().getSuccess()+" Cleared the default playlist for **"+event.getMessage().getMember().getGuild().getName()+"**");
             return;
         }
         String pname = event.getArgs().replaceAll("\\s+", "_");
@@ -60,9 +60,9 @@ public class AutoplaylistCmd extends OwnerCommand
         }
         else
         {
-            Settings settings = event.getClient().getSettingsFor(event.getGuild());
+            Settings settings = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
             settings.setDefaultPlaylist(pname);
-            event.reply(event.getClient().getSuccess()+" The default playlist for **"+event.getGuild().getName()+"** is now `"+pname+"`");
+            event.reply(event.getClient().getSuccess()+" The default playlist for **"+event.getMessage().getMember().getGuild().getName()+"** is now `"+pname+"`");
         }
     }
 }

@@ -46,7 +46,7 @@ public class SetvcCmd extends AdminCommand
             event.reply(event.getClient().getError()+" Please include a voice channel or NONE");
             return;
         }
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
+        Settings s = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         if(event.getArgs().equalsIgnoreCase("none"))
         {
             s.setVoiceChannel(null);
@@ -54,7 +54,7 @@ public class SetvcCmd extends AdminCommand
         }
         else
         {
-            List<VoiceChannel> list = FinderUtil.findVoiceChannels(event.getArgs(), event.getGuild());
+            List<VoiceChannel> list = FinderUtil.findVoiceChannels(event.getArgs(), event.getMessage().getMember().getGuild());
             if(list.isEmpty())
                 event.reply(event.getClient().getWarning()+" No Voice Channels found matching \""+event.getArgs()+"\"");
             else if (list.size()>1)

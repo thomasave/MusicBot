@@ -46,14 +46,14 @@ public class SettingsCmd extends Command
     @Override
     protected void execute(CommandEvent event) 
     {
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
+        Settings s = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         MessageBuilder builder = new MessageBuilder()
                 .append(EMOJI + " **")
                 .append(FormatUtil.filter(event.getSelfUser().getName()))
                 .append("** settings:");
-        TextChannel tchan = s.getTextChannel(event.getGuild());
-        VoiceChannel vchan = s.getVoiceChannel(event.getGuild());
-        Role role = s.getRole(event.getGuild());
+        TextChannel tchan = s.getTextChannel(event.getMessage().getMember().getGuild());
+        VoiceChannel vchan = s.getVoiceChannel(event.getMessage().getMember().getGuild());
+        Role role = s.getRole(event.getMessage().getMember().getGuild());
         EmbedBuilder ebuilder = new EmbedBuilder()
                 .setColor(event.getSelfMember().getColor())
                 .setDescription("Text Channel: " + (tchan == null ? "Any" : "**#" + tchan.getName() + "**")

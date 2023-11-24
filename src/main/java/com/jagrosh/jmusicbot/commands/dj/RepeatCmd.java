@@ -43,7 +43,7 @@ public class RepeatCmd extends DJCommand
     {
         String args = event.getArgs();
         RepeatMode value;
-        Settings settings = event.getClient().getSettingsFor(event.getGuild());
+        Settings settings = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         if(args.isEmpty())
         {
             if(settings.getRepeatMode() == RepeatMode.OFF)

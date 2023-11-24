@@ -46,7 +46,7 @@ public class SetdjCmd extends AdminCommand
             event.reply(event.getClient().getError()+" Please include a role name or NONE");
             return;
         }
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
+        Settings s = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         if(event.getArgs().equalsIgnoreCase("none"))
         {
             s.setDJRole(null);
@@ -54,7 +54,7 @@ public class SetdjCmd extends AdminCommand
         }
         else
         {
-            List<Role> list = FinderUtil.findRoles(event.getArgs(), event.getGuild());
+            List<Role> list = FinderUtil.findRoles(event.getArgs(), event.getMessage().getMember().getGuild());
             if(list.isEmpty())
                 event.reply(event.getClient().getWarning()+" No Roles found matching \""+event.getArgs()+"\"");
             else if (list.size()>1)

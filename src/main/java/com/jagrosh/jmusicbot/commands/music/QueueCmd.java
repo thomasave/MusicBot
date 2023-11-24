@@ -70,7 +70,7 @@ public class QueueCmd extends MusicCommand
             pagenum = Integer.parseInt(event.getArgs());
         }
         catch(NumberFormatException ignore){}
-        AudioHandler ah = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        AudioHandler ah = (AudioHandler)event.getMessage().getMember().getGuild().getAudioManager().getSendingHandler();
         List<QueuedTrack> list = ah.getQueue().getList();
         if(list.isEmpty())
         {
@@ -93,7 +93,7 @@ public class QueueCmd extends MusicCommand
             total += list.get(i).getTrack().getDuration();
             songs[i] = list.get(i).toString();
         }
-        Settings settings = event.getClient().getSettingsFor(event.getGuild());
+        Settings settings = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         long fintotal = total;
         builder.setText((i1,i2) -> getQueueTitle(ah, event.getClient().getSuccess(), songs.length, fintotal, settings.getRepeatMode()))
                 .setItems(songs)

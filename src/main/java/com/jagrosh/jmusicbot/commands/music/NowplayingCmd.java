@@ -40,12 +40,12 @@ public class NowplayingCmd extends MusicCommand
     @Override
     public void doCommand(CommandEvent event) 
     {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        AudioHandler handler = (AudioHandler)event.getMessage().getMember().getGuild().getAudioManager().getSendingHandler();
         Message m = handler.getNowPlaying(event.getJDA());
         if(m==null)
         {
             event.reply(handler.getNoMusicPlaying(event.getJDA()));
-            bot.getNowplayingHandler().clearLastNPMessage(event.getGuild());
+            bot.getNowplayingHandler().clearLastNPMessage(event.getMessage().getMember().getGuild());
         }
         else
         {

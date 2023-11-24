@@ -40,7 +40,7 @@ public class SkipCmd extends MusicCommand
     @Override
     public void doCommand(CommandEvent event)
     {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        AudioHandler handler = (AudioHandler)event.getMessage().getMember().getGuild().getAudioManager().getSendingHandler();
         RequestMetadata rm = handler.getRequestMetadata();
         if (handler.getPlayer().getPlayingTrack().getInfo().title.contains("Efteling") && rm.user.username.contains("demisaurus")) {
             event.reply("Sorry, Efteling music cannot be skipped. Please try again when a different song is playing.");
@@ -65,7 +65,7 @@ public class SkipCmd extends MusicCommand
             }
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
-            int required = (int)Math.ceil(listeners * bot.getSettingsManager().getSettings(event.getGuild()).getSkipRatio());
+            int required = (int)Math.ceil(listeners * bot.getSettingsManager().getSettings(event.getMessage().getMember().getGuild()).getSkipRatio());
             msg += skippers + " votes, " + required + "/" + listeners + " needed]`";
             if(skippers>=required)
             {

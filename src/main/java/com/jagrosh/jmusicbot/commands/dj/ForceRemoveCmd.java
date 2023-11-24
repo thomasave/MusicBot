@@ -55,7 +55,7 @@ public class ForceRemoveCmd extends DJCommand
             return;
         }
 
-        AudioHandler handler = (AudioHandler) event.getGuild().getAudioManager().getSendingHandler();
+        AudioHandler handler = (AudioHandler) event.getMessage().getMember().getGuild().getAudioManager().getSendingHandler();
         if (handler.getQueue().isEmpty())
         {
             event.replyError("There is nothing in the queue!");
@@ -64,7 +64,7 @@ public class ForceRemoveCmd extends DJCommand
 
 
         User target;
-        List<Member> found = FinderUtil.findMembers(event.getArgs(), event.getGuild());
+        List<Member> found = FinderUtil.findMembers(event.getArgs(), event.getMessage().getMember().getGuild());
 
         if(found.isEmpty())
         {
@@ -106,7 +106,7 @@ public class ForceRemoveCmd extends DJCommand
 
     private void removeAllEntries(User target, CommandEvent event)
     {
-        int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
+        int count = ((AudioHandler) event.getMessage().getMember().getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
         if (count == 0)
         {
             event.replyWarning("**"+target.getName()+"** doesn't have any songs in the queue!");

@@ -44,7 +44,7 @@ public class RemoveCmd extends MusicCommand
     @Override
     public void doCommand(CommandEvent event) 
     {
-        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        AudioHandler handler = (AudioHandler)event.getMessage().getMember().getGuild().getAudioManager().getSendingHandler();
         if(handler.getQueue().isEmpty())
         {
             event.replyError("There is nothing in the queue!");
@@ -70,10 +70,10 @@ public class RemoveCmd extends MusicCommand
             event.replyError("Position must be a valid integer between 1 and "+handler.getQueue().size()+"!");
             return;
         }
-        Settings settings = event.getClient().getSettingsFor(event.getGuild());
+        Settings settings = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         boolean isDJ = event.getMember().hasPermission(Permission.MANAGE_SERVER);
         if(!isDJ)
-            isDJ = event.getMember().getRoles().contains(settings.getRole(event.getGuild()));
+            isDJ = event.getMember().getRoles().contains(settings.getRole(event.getMessage().getMember().getGuild()));
         QueuedTrack qt = handler.getQueue().get(pos-1);
         if(qt.getIdentifier()==event.getAuthor().getIdLong())
         {

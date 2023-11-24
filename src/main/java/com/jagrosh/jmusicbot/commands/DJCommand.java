@@ -37,12 +37,12 @@ public abstract class DJCommand extends MusicCommand
     {
         if(event.getAuthor().getId().equals(event.getClient().getOwnerId()))
             return true;
-        if(event.getGuild()==null)
+        if(event.getMessage().getMember().getGuild()==null)
             return true;
         if(event.getMember().hasPermission(Permission.MANAGE_SERVER))
             return true;
-        Settings settings = event.getClient().getSettingsFor(event.getGuild());
-        Role dj = settings.getRole(event.getGuild());
-        return dj!=null && (event.getMember().getRoles().contains(dj) || dj.getIdLong()==event.getGuild().getIdLong());
+        Settings settings = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
+        Role dj = settings.getRole(event.getMessage().getMember().getGuild());
+        return dj!=null && (event.getMember().getRoles().contains(dj) || dj.getIdLong()==event.getMessage().getMember().getGuild().getIdLong());
     }
 }

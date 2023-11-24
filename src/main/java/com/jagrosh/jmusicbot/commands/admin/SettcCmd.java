@@ -46,7 +46,7 @@ public class SettcCmd extends AdminCommand
             event.reply(event.getClient().getError()+" Please include a text channel or NONE");
             return;
         }
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
+        Settings s = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
         if(event.getArgs().equalsIgnoreCase("none"))
         {
             s.setTextChannel(null);
@@ -54,7 +54,7 @@ public class SettcCmd extends AdminCommand
         }
         else
         {
-            List<TextChannel> list = FinderUtil.findTextChannels(event.getArgs(), event.getGuild());
+            List<TextChannel> list = FinderUtil.findTextChannels(event.getArgs(), event.getMessage().getMember().getGuild());
             if(list.isEmpty())
                 event.reply(event.getClient().getWarning()+" No Text Channels found matching \""+event.getArgs()+"\"");
             else if (list.size()>1)

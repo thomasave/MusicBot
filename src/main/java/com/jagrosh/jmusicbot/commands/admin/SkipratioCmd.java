@@ -45,9 +45,9 @@ public class SkipratioCmd extends AdminCommand
                 event.replyError("The provided value must be between 0 and 100!");
                 return;
             }
-            Settings s = event.getClient().getSettingsFor(event.getGuild());
+            Settings s = event.getClient().getSettingsFor(event.getMessage().getMember().getGuild());
             s.setSkipRatio(val / 100.0);
-            event.replySuccess("Skip percentage has been set to `" + val + "%` of listeners on *" + event.getGuild().getName() + "*");
+            event.replySuccess("Skip percentage has been set to `" + val + "%` of listeners on *" + event.getMessage().getMember().getGuild().getName() + "*");
         }
         catch(NumberFormatException ex)
         {

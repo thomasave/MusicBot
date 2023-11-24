@@ -20,6 +20,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.settings.Settings;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -48,9 +49,10 @@ public abstract class MusicCommand extends Command
     @Override
     protected void execute(CommandEvent event) 
     {
-        Settings settings = event.getClient().getSettingsFor(event.getGuild());
-        TextChannel tchannel = settings.getTextChannel(event.getGuild());
-        LOG.info("Received a MusicCommand from " + event.getAuthor().getName() + " on channel " + event.getChannel().getName() + " from server " + event.getGuild().getName() + ": " + event.getMessage().getContentStripped());
+        Guild guild = event.getMessage().getMember().getGuild();
+        Settings settings = event.getClient().getSettingsFor(guild);
+        TextChannel tchannel = settings.getTextChannel(guild);
+        LOG.info("Received a MusicCommand from " + event.getAuthor().getName() + " on channel " + event.getChannel().getName() + " from server " + guild.getName() + ": " + event.getMessage().getContentStripped());
         if(tchannel!=null && !event.getTextChannel().equals(tchannel))
         {
             try 
@@ -60,17 +62,17 @@ public abstract class MusicCommand extends Command
             event.replyInDm(event.getClient().getError()+" You can only use that command in "+tchannel.getAsMention()+"!");
             return;
         }
-        bot.getPlayerManager().setUpHandler(event.getGuild()); // no point constantly checking for this later
-        if(bePlaying && !((AudioHandler)event.getGuild().getAudioManager().getSendingHandler()).isMusicPlaying(event.getJDA()))
+        bot.getPlayerManager().setUpHandler(guild); // no point constantly checking for this later
+        if(bePlaying && !((AudioHandler)guild.getAudioManager().getSendingHandler()).isMusicPlaying(event.getJDA()))
         {
             event.reply(event.getClient().getError()+" There must be music playing to use that!");
             return;
         }
         if(beListening)
         {
-            VoiceChannel current = event.getGuild().getSelfMember().getVoiceState().getChannel();
+            VoiceChannel current = guild.getSelfMember().getVoiceState().getChannel();
             if(current==null)
-                current = settings.getVoiceChannel(event.getGuild());
+                current = settings.getVoiceChannel(guild);
             GuildVoiceState userState = event.getMember().getVoiceState();
             if(!userState.inVoiceChannel() || userState.isDeafened() || (current!=null && !userState.getChannel().equals(current)))
             {
@@ -78,18 +80,18 @@ public abstract class MusicCommand extends Command
                 return;
             }
 
-            VoiceChannel afkChannel = userState.getGuild().getAfkChannel();
+            VoiceChannel afkChannel = guild.getAfkChannel();
             if(afkChannel != null && afkChannel.equals(userState.getChannel()))
             {
                 event.replyError("You cannot use that command in an AFK channel!");
                 return;
             }
 
-            if(!event.getGuild().getSelfMember().getVoiceState().inVoiceChannel())
+            if(!guild.getSelfMember().getVoiceState().inVoiceChannel())
             {
                 try 
                 {
-                    userState.getGuild().getAudioManager().openAudioConnection(userState.getChannel());
+                    guild.getAudioManager().openAudioConnection(userState.getChannel());
                 }
                 catch(PermissionException ex) 
                 {
