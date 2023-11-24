@@ -19,12 +19,14 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.examples.command.PingCommand;
 import com.jagrosh.jmusicbot.Bot;
+import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.general.SettingsCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.utils.CustomMessage;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
@@ -48,6 +50,34 @@ public class ServerCmd extends OwnerCommand {
     @Override
     public void execute(CommandEvent event) {
         String[] parts = event.getArgs().split("\\s+", 3);
+        if (parts.length > 0 && parts[0].equals("list")) {
+            StringBuilder playing = new StringBuilder();
+            StringBuilder empty = new StringBuilder();
+            playing.append("Currently playing:\n");
+            empty.append("Currently inactive:\n");
+            for (Guild g: bot.getJDA().getGuilds()) {
+                AudioHandler handler = (AudioHandler)g.getAudioManager().getSendingHandler();
+                if (handler != null) {
+                    AudioTrack track = handler.getPlayer().getPlayingTrack();
+                    playing.append("- ")
+                            .append(g.getName())
+                            .append(" [")
+                            .append(g.getId())
+                            .append("]: ")
+                            .append(track.getInfo().title)
+                            .append("\n");
+                } else {
+                    empty.append("- ")
+                            .append(g.getName())
+                            .append(" [")
+                            .append(g.getId())
+                            .append("]\n");
+                }
+            }
+            playing.append(empty);
+            event.reply(playing.toString());
+            return;
+        }
         if (parts.length < 2)  {
             return;
         }

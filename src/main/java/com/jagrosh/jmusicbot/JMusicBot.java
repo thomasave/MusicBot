@@ -136,7 +136,6 @@ public class JMusicBot
                         
                         new AutoplaylistCmd(bot),
                         new DebugCmd(bot),
-                        new OverviewCmd(bot),
                         new ServerCmd(bot),
                         new PlaylistCmd(bot),
                         new SetavatarCmd(bot),
