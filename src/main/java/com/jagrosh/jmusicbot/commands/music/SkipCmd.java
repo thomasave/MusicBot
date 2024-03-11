@@ -20,6 +20,7 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.RequestMetadata;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
+import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
  *
@@ -46,7 +47,11 @@ public class SkipCmd extends MusicCommand
             event.reply("Sorry, Efteling music cannot be skipped. Please try again when a different song is playing.");
             return;
         }
-        if(event.getAuthor().getIdLong() == rm.getOwner())
+        double skipRatio = bot.getSettingsManager().getSettings(event.getGuild()).getSkipRatio();
+        if(skipRatio == -1) {
+          skipRatio = bot.getConfig().getSkipRatio();
+        }
+        if(event.getAuthor().getIdLong() == rm.getOwner() || skipRatio == 0)
         {
             event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
             handler.getPlayer().stopTrack();
@@ -65,12 +70,16 @@ public class SkipCmd extends MusicCommand
             }
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
+<<<<<<< HEAD
             int required = (int)Math.ceil(listeners * bot.getSettingsManager().getSettings(event.getMessage().getMember().getGuild()).getSkipRatio());
+=======
+            int required = (int)Math.ceil(listeners * skipRatio);
+>>>>>>> 49c3ec79607bef5b15096ebd7b3645ba5a5b2095
             msg += skippers + " votes, " + required + "/" + listeners + " needed]`";
             if(skippers>=required)
             {
                 msg += "\n" + event.getClient().getSuccess() + " Skipped **" + handler.getPlayer().getPlayingTrack().getInfo().title
-                    + "** " + (rm.getOwner() == 0L ? "(autoplay)" : "(requested by **" + rm.user.username + "**)");
+                    + "** " + (rm.getOwner() == 0L ? "(autoplay)" : "(requested by **" + FormatUtil.formatUsername(rm.user) + "**)");
                 handler.getPlayer().stopTrack();
             }
             event.reply(msg);

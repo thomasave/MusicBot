@@ -20,6 +20,7 @@ import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.RequestMetadata;
 import com.jagrosh.jmusicbot.commands.DJCommand;
+import com.jagrosh.jmusicbot.utils.FormatUtil;
 
 /**
  *
@@ -45,7 +46,7 @@ public class ForceskipCmd extends DJCommand
             event.reply("Sorry, Efteling music cannot be skipped. Please try again when a different song is playing.");
         } else {
             event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title
-                    +"** "+(rm.getOwner() == 0L ? "(autoplay)" : "(requested by **" + rm.user.username + "**)"));
+                    +"** "+(rm.getOwner() == 0L ? "(autoplay)" : "(requested by **" + FormatUtil.formatUsername(rm.user) + "**)"));
             handler.getPlayer().stopTrack();
         }
     }

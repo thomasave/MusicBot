@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author John Grosh <john.a.grosh@gmail.com>
  */
-public abstract class MusicCommand extends Command 
+public abstract class MusicCommand extends Command
 {
     protected final Bot bot;
     protected boolean bePlaying;
@@ -45,9 +45,9 @@ public abstract class MusicCommand extends Command
         this.guildOnly = true;
         this.category = new Category("Music");
     }
-    
+
     @Override
-    protected void execute(CommandEvent event) 
+    protected void execute(CommandEvent event)
     {
         Guild guild = event.getMessage().getMember().getGuild();
         Settings settings = event.getClient().getSettingsFor(guild);
@@ -55,7 +55,7 @@ public abstract class MusicCommand extends Command
         LOG.info("Received a MusicCommand from " + event.getAuthor().getName() + " on channel " + event.getChannel().getName() + " from server " + guild.getName() + ": " + event.getMessage().getContentStripped());
         if(tchannel!=null && !event.getTextChannel().equals(tchannel))
         {
-            try 
+            try
             {
                 event.getMessage().delete().queue();
             } catch(PermissionException ignore){}
@@ -89,11 +89,12 @@ public abstract class MusicCommand extends Command
 
             if(!guild.getSelfMember().getVoiceState().inVoiceChannel())
             {
-                try 
+                try
                 {
                     guild.getAudioManager().openAudioConnection(userState.getChannel());
+                    guild.getAudioManager().setSelfDeafened(true);
                 }
-                catch(PermissionException ex) 
+                catch(PermissionException ex)
                 {
                     event.reply(event.getClient().getError()+" I am unable to connect to "+userState.getChannel().getAsMention()+"!");
                     return;
@@ -103,6 +104,6 @@ public abstract class MusicCommand extends Command
 
         doCommand(event);
     }
-    
+
     public abstract void doCommand(CommandEvent event);
 }
