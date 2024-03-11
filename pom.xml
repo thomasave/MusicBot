@@ -30,6 +30,10 @@
             <name>m2-duncte123</name>
             <url>https://m2.duncte123.dev/releases</url>
             </repository>
+        <repository>
+            <id>sonatype.org</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            </repository>
         </repositories>
 
     <dependencies>
@@ -48,7 +52,7 @@
         <dependency>
             <groupId>dev.arbjerg</groupId>
             <artifactId>lavaplayer</artifactId>
-            <version>(2.1.0,)</version>
+            <version>b4188e802890774275767148c9cf1840d9478c05-SNAPSHOT</version>
             </dependency>
         <dependency>
             <groupId>com.github.jagrosh</groupId>
