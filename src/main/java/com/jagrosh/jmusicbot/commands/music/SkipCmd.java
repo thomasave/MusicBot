@@ -70,11 +70,7 @@ public class SkipCmd extends MusicCommand
             }
             int skippers = (int)event.getSelfMember().getVoiceState().getChannel().getMembers().stream()
                     .filter(m -> handler.getVotes().contains(m.getUser().getId())).count();
-<<<<<<< HEAD
-            int required = (int)Math.ceil(listeners * bot.getSettingsManager().getSettings(event.getMessage().getMember().getGuild()).getSkipRatio());
-=======
             int required = (int)Math.ceil(listeners * skipRatio);
->>>>>>> 49c3ec79607bef5b15096ebd7b3645ba5a5b2095
             msg += skippers + " votes, " + required + "/" + listeners + " needed]`";
             if(skippers>=required)
             {
