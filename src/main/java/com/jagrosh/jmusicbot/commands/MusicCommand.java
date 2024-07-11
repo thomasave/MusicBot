@@ -92,7 +92,6 @@ public abstract class MusicCommand extends Command
                 try
                 {
                     guild.getAudioManager().openAudioConnection(userState.getChannel());
-                    guild.getAudioManager().setSelfDeafened(true);
                 }
                 catch(PermissionException ex)
                 {

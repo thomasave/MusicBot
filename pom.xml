@@ -30,12 +30,16 @@
             <name>m2-duncte123</name>
             <url>https://m2.duncte123.dev/releases</url>
             </repository>
+        <!-- <repository> -->
+        <!--     <id>sonatype.org</id> -->
+        <!--     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url> -->
+        <!--     </repository> -->
+        <!-- </repositories> -->
         <repository>
-            <id>sonatype.org</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-            </repository>
-        </repositories>
-
+            <id>arbjergDev</id>
+            <name>Lavalink Repository</name>
+            <url>https://maven.lavalink.dev/releases</url>
+        </repository>
     <dependencies>
         <!-- Discord Dependencies -->
         <dependency>
@@ -49,16 +53,28 @@
             <version>3.0.5</version>
             <type>pom</type>
             </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>dev.arbjerg</groupId> -->
+        <!--     <artifactId>lavaplayer</artifactId> -->
+        <!--     <version>0eaeee195f0315b2617587aa3537fa202df07ddc-SNAPSHOT</version> -->
+        <!--     </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.github.jagrosh</groupId> -->
+        <!--     <artifactId>JLyrics</artifactId> -->
+        <!--     <version>master-SNAPSHOT</version> -->
+        <!--     </dependency> -->
+        <!--     <version>2.2.1</version> -->
+        <!-- </dependency> -->
         <dependency>
-            <groupId>dev.arbjerg</groupId>
-            <artifactId>lavaplayer</artifactId>
-            <version>0eaeee195f0315b2617587aa3537fa202df07ddc-SNAPSHOT</version>
-            </dependency>
-        <dependency>
-            <groupId>com.github.jagrosh</groupId>
-            <artifactId>JLyrics</artifactId>
-            <version>master-SNAPSHOT</version>
-            </dependency>
+            <groupId>dev.lavalink.youtube</groupId>
+            <artifactId>common</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+	<dependency>
+	    <groupId>com.github.jagrosh</groupId>
+	    <artifactId>JLyrics</artifactId>
+	    <version>master-SNAPSHOT</version>
+	</dependency>
         <dependency>
             <groupId>com.dunctebot</groupId>
             <artifactId>sourcemanagers</artifactId>
